@@ -19,7 +19,8 @@ var nlisApp = angular
     'ngTouch',
     'firebase',
     'ui.router',
-    'ui.bootstrap'
+    'ui.bootstrap',
+    'metawidget'
   ]);
 
 nlisApp.config(function ($stateProvider, $urlRouterProvider) {
@@ -57,7 +58,7 @@ nlisApp.run(function ($rootScope, $state, $timeout, AuthService) {
       promise.then(function(userProfile) {
         $rootScope.currentUser = authData.password.email;
         $rootScope.userProfile = userProfile;
-        $state.go('dashboard.default');
+        $state.go('dashboard');
         $rootScope.$on('$stateChangeStart', function (event, toState, toParams) {
           var requireLogin = toState.data.requireLogin;
           if (requireLogin && typeof $rootScope.currentUser === 'undefined') {
