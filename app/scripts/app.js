@@ -58,7 +58,6 @@ nlisApp.run(function ($rootScope, $state, $timeout, AuthService) {
       promise.then(function(userProfile) {
         $rootScope.currentUser = authData.password.email;
         $rootScope.userProfile = userProfile;
-        $state.go('dashboard');
         $rootScope.$on('$stateChangeStart', function (event, toState, toParams) {
           var requireLogin = toState.data.requireLogin;
           if (requireLogin && typeof $rootScope.currentUser === 'undefined') {

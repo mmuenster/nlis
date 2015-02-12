@@ -2,7 +2,7 @@
 
 'use strict';
 
-angular.module('nlisApp').controller('EditUserProfileController', function($scope, $rootScope) {
+nlisApp.controller('EditUserProfileController', function($scope, $rootScope) {
 	
                $scope.user = $rootScope.userProfile;
 
