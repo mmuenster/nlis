@@ -2,11 +2,19 @@
 
 'use strict';
 
-nlisApp.controller('EditUserProfileController', function($scope, $rootScope) {
-	
-               $scope.user = $rootScope.userProfile;
+nlisApp.controller('EditUserProfileController', function($scope, $rootScope, AuthService) {
+			$scope.alerts = [];
+            
+            $scope.user = $rootScope.userProfile;
 
-               $scope.save = function() {
-                  console.log( $scope.user );
-               };
+            $scope.save = function() {
+	              var promise = AuthService.saveUserProfile();
+	              promise.then( function() {
+		              $scope.alerts.push({ type:"success", message:"User profile data saved successfully!"});
+		              console.log($scope.user);
+		          }, function () {
+		          	console.log('There was a problem saving the user data');
+		          });
+
+	              };
             });

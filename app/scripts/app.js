@@ -51,25 +51,25 @@ nlisApp.config(function ($stateProvider, $urlRouterProvider) {
 });
 
 nlisApp.run(function ($rootScope, $state, $timeout, AuthService) {
-    var authData=AuthService.checkLoginStatus();
 
-    if (authData) {
-      var promise=AuthService.getUserProfile(authData);
-      promise.then(function(userProfile) {
-        $rootScope.currentUser = authData.password.email;
-        $rootScope.userProfile = userProfile;
         $rootScope.$on('$stateChangeStart', function (event, toState, toParams) {
           var requireLogin = toState.data.requireLogin;
+          
           if (requireLogin && typeof $rootScope.currentUser === 'undefined') {
-            event.preventDefault();
-            $state.go('login');
-          };
+             if (AuthService.checkLoginStatus()) {
+                  var authData=AuthService.checkLoginStatus();
+                  var promise=AuthService.getUserProfile(authData);
+                  promise.then(function(userProfile) {
+                    $rootScope.currentUser = authData.password.email;
+                    $rootScope.userProfile = userProfile
+                    $state.go(toState.name, toParams);
+                  });
+             } else {
+                event.preventDefault();
+                $state.go('login');
+             }
+          }
         });
-      },function(error) {
-        console.log('Get User Profile failed.', error);
-      });
-    }
-
 });
 
 nlisApp.factory('AuthService', function($firebaseAuth, $q, $rootScope) {
@@ -109,10 +109,25 @@ nlisApp.factory('AuthService', function($firebaseAuth, $q, $rootScope) {
       authService.getUserProfile = function(authData) {
         return $q(function(resolve, reject){
           fbRef.child('users/'+authData.uid).once('value', function(data) { 
-            resolve( data.val() );
+            resolve(data.val());
           }, function(error) {
             reject(error);
           });
+        });
+      };
+
+      authService.saveUserProfile = function() {
+        var authData = fbRef.getAuth();
+        var userProfile= $rootScope.userProfile;
+        return $q(function(resolve, reject){
+          fbRef.child('users/'+authData.uid).set(userProfile, function(error) {
+            if (error) {
+              reject('Synchronization failed');
+            } else {
+              resolve('Synchronization succeeded');
+            }
+
+          });  
         });
       };
 
@@ -127,3 +142,4 @@ nlisApp.factory('AuthService', function($firebaseAuth, $q, $rootScope) {
 
       return authService;
 });
+

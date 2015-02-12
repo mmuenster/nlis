@@ -10,4 +10,8 @@
       $rootScope.currentUser = undefined;
       $state.go('login');
 };
+
+    $scope.logDateToConsole = function (path) {
+     console.log(Date.now());
+    };
 });
