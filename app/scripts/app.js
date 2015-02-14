@@ -25,7 +25,7 @@ var nlisApp = angular
 
 nlisApp.config(function ($stateProvider, $urlRouterProvider) {
 
-  $urlRouterProvider.otherwise('dashboard');
+  $urlRouterProvider.otherwise('login');
 
   $stateProvider
     .state('login', {
