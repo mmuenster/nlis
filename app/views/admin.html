@@ -1,0 +1,14 @@
+<!-- admin.html -->
+
+<div id="page-wrapper">
+    <div class="container-fluid">
+   		<div ng-controller="AdminController">
+			<li ng-repeat="user in users">
+  				{{user.name}} : {{user.roles}}    <button ng-click="delete(user)">X</button> <button ng-click="edit(user)">Edit Profile</button> </br>
+			</li>
+			<button ng-click="createUser()">Create User</button>
+		</div>
+    </div>
+</div>
+
+

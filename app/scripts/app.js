@@ -27,13 +27,6 @@ nlisApp.config(function ($stateProvider, $urlRouterProvider) {
   $urlRouterProvider.otherwise('login');
 
   $stateProvider
-    .state('main', {
-      url: '/main',
-      abstract: true,
-      resolve: {
-        currentUser: 'UserService'
-      }
-    })
     .state('login', {
       url: '/login',
       templateUrl: 'views/login.html',
@@ -41,50 +34,37 @@ nlisApp.config(function ($stateProvider, $urlRouterProvider) {
       resolve: {
         currentUser: 'UserService'
       },
-      data: {
-        requireLogin: false
-      }
     })
     .state('dashboard', {
       url: '/dashboard',
       templateUrl: 'views/dashboard.html',
-      resolve: {
-        currentUser: 'UserService'
-      },
-      data: {
-        requireLogin: true
-      }
     })
-    .state('main.editUserProfile', {
+    .state('editUserProfile', {
       url: '/editUserProfile',
       templateUrl: 'views/editUserProfile.html',
-      data: { requireLogin: true }
-    });
+    })
+    .state('admin', {
+      url: '/admin',
+      templateUrl: 'views/admin.html'
+    })
+
 
 });
 
 nlisApp.constant('fbURL', 'https://intense-heat-7202.firebaseio.com/');
 
-nlisApp.run(function ($rootScope, $state, $timeout) {
+nlisApp.run(function ($rootScope, $state, UserService) {
 
-        // $rootScope.$on('$stateChangeStart', function (event, toState, toParams) {
-        //   var requireLogin = toState.data.requireLogin;
-          
-        //   if (requireLogin && typeof $rootScope.currentUser === 'undefined') {
-        //      if (AuthService.checkLoginStatus()) {
-        //           var authData=AuthService.checkLoginStatus();
-        //           var promise=AuthService.getUserProfile(authData);
-        //           promise.then(function(userProfile) {
-        //             $rootScope.currentUser = authData.password.email;
-        //             $rootScope.userProfile = userProfile
-        //             $state.go(toState.name, toParams);
-        //           });
-        //      } else {
-        //         event.preventDefault();
-        //         $state.go('login');
-        //      }
-        //   }
-        // });
+        $rootScope.$on('$stateChangeStart', function (event, toState, toParams) {
+          if (!$rootScope.currentUser && toState.name != 'login') {
+            event.preventDefault();
+            var promise = UserService;
+            promise.then(function() {
+              console.log("In the promise.")
+              $state.go(toState.name, toParams);
+            });
+          }
+        });
 });
 
 nlisApp.factory('UserService', function($q, $firebaseAuth, fbURL, $rootScope) {
@@ -140,6 +120,10 @@ nlisApp.factory('AuthService', function($firebaseAuth, $q, $rootScope, fbURL) {
           return fbRef.unauth();
         };
 
+
+        authService.updateUserProfile = function(profileData) {
+          fbRef.child('users/' + $rootScope.currentUser.uid).update(profileData);
+        }
 
       // Create a callback which logs the current auth state
       function authDataCallback(authData) {

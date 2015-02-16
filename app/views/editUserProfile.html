@@ -2,13 +2,22 @@
 
     <div class="container-fluid">
    <div ng-controller="EditUserProfileController">
-      Edit USER PROFILE
-      <form ng-submit="save()">
-      <metawidget id="metawidget" ng-model="user">
-      </metawidget>
-         <button>Save</button>
-      </form>
-   </div>
+  <form novalidate class="simple-form">
+    <h3> E-mail:  {{user.email}}<br /></h3>
+    First Name: <input type="text" ng-model="user.firstName" /><br />
+    Middle Name: <input type="text" ng-model="user.middleName" /><br />
+    Last Name: <input type="text" ng-model="user.lastName" /><br />
+    Suffix: <input type="text" ng-model="user.suffix" /><br />
+    Roles: <input type="text" ng-model="user.roles" /><br />
+    NPI: <input type="text" ng-model="user.NPI" /><br />
+    Time Zone: <input type="text" ng-model="user.timeZone" /><br />
+    Gender: <input type="radio" ng-model="user.gender" value="male" />male
+    <input type="radio" ng-model="user.gender" value="female" />female<br />
+    <input type="button" ng-click="reset()" value="Reset" />
+    <input type="submit" ng-click="update(user)" value="Save" />
+  </form>
+
+</div>
 
         </div>
         </div>
