@@ -7,7 +7,6 @@
 
     $scope.logout = function() {
       var x = AuthService.logout();
-      $rootScope.currentUser = undefined;
       $state.go('login');
 };
 

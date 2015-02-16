@@ -2,7 +2,7 @@
 
 'use strict';
 
-nlisApp.controller('EditUserProfileController', function($scope, $rootScope, AuthService) {
+nlisApp.controller('EditUserProfileController', function($scope, $rootScope) {
 			$scope.alerts = [];
             
             $scope.user = $rootScope.userProfile;
