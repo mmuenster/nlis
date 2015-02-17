@@ -8,9 +8,9 @@ nlisApp.controller('AdminController', function($scope, fbURL, $firebase, $fireba
 
 	$scope.users = $firebase(fbUsersRef).$asArray();
 
-	$scope.createUser = function() {
-		var newEmail = "m" + counter + "@m.com";
-		fbRef.createUser({ email:newEmail, password:'m'}, function(error, userData) {
+	$scope.createUser = function(name,email,password) {
+		
+		fbRef.createUser({ email:email, password:password}, function(error, userData) {
 		  if (error) {
 		    switch (error.code) {
 		      case "EMAIL_TAKEN":
@@ -24,7 +24,7 @@ nlisApp.controller('AdminController', function($scope, fbURL, $firebase, $fireba
 		    }
 		  } else {
 		    console.log("Successfully created user account with uid:", userData);
-		   $firebase(fbUsersRef).$set(userData.uid,{ email:newEmail, name:userData.uid, password:'m' });
+		   $firebase(fbUsersRef).$set(userData.uid,{ email:email, name:name, password:password });
 		  }
 		});
 		counter++;

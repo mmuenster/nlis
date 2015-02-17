@@ -38,6 +38,9 @@ nlisApp.config(function ($stateProvider, $urlRouterProvider) {
     .state('dashboard', {
       url: '/dashboard',
       templateUrl: 'views/dashboard.html',
+      resolve: {
+        currentUser: 'UserService'
+      }
     })
     .state('editUserProfile', {
       url: '/editUserProfile',
@@ -54,6 +57,7 @@ nlisApp.config(function ($stateProvider, $urlRouterProvider) {
 nlisApp.constant('fbURL', 'https://intense-heat-7202.firebaseio.com/');
 
 nlisApp.run(function ($rootScope, $state, UserService) {
+  var x = UserService;
 
         $rootScope.$on('$stateChangeStart', function (event, toState, toParams) {
           if (!$rootScope.currentUser && toState.name != 'login') {

@@ -3,10 +3,27 @@
 <div id="page-wrapper">
     <div class="container-fluid">
    		<div ng-controller="AdminController">
-			<li ng-repeat="user in users">
-  				{{user.name}} : {{user.roles}}    <button ng-click="delete(user)">X</button> <button ng-click="edit(user)">Edit Profile</button> </br>
+			<li>
+				<h3>Name     Roles</h3>
 			</li>
-			<button ng-click="createUser()">Create User</button>
+			<li ng-repeat="user in users">
+  				{{user.name}} :           {{user.roles}}    
+  				<button type="button" class="btn btn-danger" aria-label="Left Align" ng-click="delete(user)">
+  					<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+				</button>
+  				<button type="button" class="btn btn-primary" aria-label="Left Align" ng-click="edit(user)">
+  					<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+				</button>
+			</li>
+			<form class="form-inline">
+			Name
+			<input type="text" class="form-control" id="newUserName" ng-model="newUserName">
+			Email
+			<input type="text" class="form-control" id="newUserEmail"ng-model="newUserEmail">
+			Password
+			<input type="text" class="form-control" id="newUserPassword"ng-model="newUserPassword">
+
+			<button type="submit" class="btn btn-default" ng-click="createUser(newUserName,newUserEmail,newUserPassword)">Create User</button>
 		</div>
     </div>
 </div>
